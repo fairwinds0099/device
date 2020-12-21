@@ -2,6 +2,7 @@ import pandas as pd
 import datetime
 from dateutil.parser import parse
 import numpy as np
+import csv
 
 if __name__ == '__main__':
     print("test")
@@ -15,15 +16,17 @@ if __name__ == '__main__':
     dates = df.date.values
     activities = df.activity.values
 
+    dict = {}
+
     # usr = 'BRB0355'
     # if usr == 'BRB0355':
     for usr in users:
         try:
-            print("finding device use time for user: " + usr)
+            #print("finding device use time for user: " + usr)
             df_usr = df[df['user'] == usr]
             activities_usr = df_usr.activity.values
 
-            print(usr + " initially has " + str(len(df_usr)) + " records")
+            #print(usr + " initially has " + str(len(df_usr)) + " records")
 
             aincr = 1
             delete_counter = 0
@@ -36,8 +39,8 @@ if __name__ == '__main__':
                     delete_counter += 1
                 aincr += 1
 
-            print("deleted  " + str(delete_counter) + " rows from user " + usr)
-            print(usr + " now has " + str(len(df_usr)) + " records")
+            #print("deleted  " + str(delete_counter) + " rows from user " + usr)
+            #print(usr + " now has " + str(len(df_usr)) + " records")
 
             # aincrd = 1
             # while aincrd < len(activities_usr) - 1:
@@ -53,8 +56,8 @@ if __name__ == '__main__':
             timediff_usr_seconds = 0
             sum_timediff_usr_seconds = 0
             i = 0
-            print(len(dates_usr))
-            while i < ((len(dates_usr) / 2) - 2):
+            #print(len(dates_usr))
+            while i < ((len(dates_usr) / 2) ):
                 # print(dates_moh[i])
                 # print(datetime.datetime.strptime(dates_moh[i], '%m/%d/%Y, %H:%M:%S'))
                 # timediff_usr.append(i)
@@ -66,6 +69,13 @@ if __name__ == '__main__':
                 # timediff_usr.append((parse(dates_usr[count])-parse(dates_usr[count-1])).seconds)
                 count += 2
                 i += 1
-            print("average device use time for user: " + usr + " is: " + str(sum_timediff_usr_seconds / len(dates_usr)))
+            average_time_diff_usr_seconds = sum_timediff_usr_seconds / len(dates_usr)
+            print("average device use time for user: " + usr + " is: " + str(average_time_diff_usr_seconds))
+            dict[usr] = average_time_diff_usr_seconds
         except:
             print("exception occured for user " + usr)
+    print(dict)
+
+    with open('mycsvfile.csv', 'w') as f:
+        w = csv.writer(f)
+        w.writerows(dict.items())
