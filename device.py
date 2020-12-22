@@ -76,6 +76,6 @@ if __name__ == '__main__':
             print("exception occured for user " + usr)
     print(dict)
 
-    with open('mycsvfile.csv', 'w') as f:
+    with open('device_logon_times.csv', 'w') as f:
         w = csv.writer(f)
         w.writerows(dict.items())
