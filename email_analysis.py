@@ -35,7 +35,8 @@ if __name__ == '__main__':
             if to_field[i].__contains__('@dtaa.com'):  # filtering out non dtaa emails
                 df_new = df_new.append({'useer': row['user'], 'froom': row['from_field'], 'too': to_field[i]},
                                        ignore_index=True)
-    print(df_new.head())
+    print('======= PRINTING DF WITH EXTRACTED EMAILS =========')
+    print(df_new.head(10))
 
     # generating coded user vs from  dictionary to be used as reference
     froom_all = df_new.froom.values
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     dict_temp = {}
     for i in range(len(froom_all)):
         dict_temp[froom_all[i]] = useer_all[i]
-    print("length of refernce dict for user vs from fields is: " +  str(len(dict_temp)))
+    print("length of reference dict for user vs from fields is: " +  str(len(dict_temp)))
 
     # created empty final df with coded_to and user columns
     df_coded = pd.DataFrame(columns=['coded_to', 'user_common'])
@@ -56,18 +57,21 @@ if __name__ == '__main__':
                 break
         df_coded = df_coded.append({'coded_to': coded_too, 'user_common': row['useer']}, ignore_index=True)
 
-print(df_new.head(50))
-print(df_coded.head(50))
+    print('======= PRINTING DF WITH CODED/TRANSFORMED EMAILS =========')
+    print(df_coded.head(10))
 
-G = nx.Graph()
-X = df_coded.user_common.values
-y = df_coded.coded_to.values
+    G = nx.Graph()
+    X = df_coded.user_common.values
+    y = df_coded.coded_to.values
 
-for i in range(len(df_coded)):
-    G.add_node(X[i])
-    G.add_node(y[i])
-    G.add_edge(X[i], y[i])
+    print('======= GENERATING GRAPH =========')
+    for i in range(len(df_coded)):
+        G.add_node(X[i])
+        G.add_node(y[i])
+        G.add_edge(X[i], y[i])
 
-nx.draw(G)
-plt.savefig('plot.png')
-network.calculate_centrality('degree', G)
+    nx.draw(G)
+    plt.savefig('plot.png')
+
+    print('======= CALCULATING GRAPH METRICS=========')
+    network.calculate_centrality('degree', G)

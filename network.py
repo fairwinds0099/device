@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import csv
 
+
 def calculate_centrality(centrality_type, graph):
 
     if centrality_type == 'degree':
@@ -14,7 +15,8 @@ def calculate_centrality(centrality_type, graph):
     if centrality_type == 'closeness':
         dict = nx.closeness_centrality(graph)
 
-    with open('/Users/apple4u/Desktop/goksel tez/_centrality_raw.csv', 'w') as f:
+    target_path = '/Users/apple4u/Desktop/goksel tez/' + centrality_type + '_centrality_raw.csv'
+    with open(target_path, 'w') as f:
         w = csv.writer(f)
         w.writerows(dict.items())
 
