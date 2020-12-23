@@ -17,9 +17,6 @@ if __name__ == '__main__':
     activities = df.activity.values
 
     dict = {}
-
-    # usr = 'BRB0355'
-    # if usr == 'BRB0355':
     for usr in users:
         try:
             #print("finding device use time for user: " + usr)

@@ -3,7 +3,7 @@ import operator
 import pandas as pd
 import matplotlib.pyplot as plt
 import networkx as nx
-
+import csv
 
 def calculate_centrality(centrality_type, graph):
 
@@ -14,25 +14,14 @@ def calculate_centrality(centrality_type, graph):
     if centrality_type == 'closeness':
         dict = nx.closeness_centrality(graph)
 
-    keymax = max(dict, key=dict.get)
-    print(keymax)
-    print(dict.get(keymax))
+    with open('/Users/apple4u/Desktop/goksel tez/_centrality_raw.csv', 'w') as f:
+        w = csv.writer(f)
+        w.writerows(dict.items())
 
-    sorted_x = sorted(dict.items(), key=operator.itemgetter(1))
-    print(sorted_x)
-    print(len(dict))
-
-    print(dict.get("DRR0162"))
-
-    dfcentrality = pd.DataFrame.from_dict(sorted_x)
-    dfcentrality.info()
-    dfcentrality.head()
-    dfcentrality.to_csv(r'/Users/apple4u/Desktop/goksel tez/_centrality_raw.csv', index=False)
-
-
+#sample graph generating and plotting methods
 if __name__ == '__main__':
     G = nx.Graph()
-    peterson =  nx.petersen_graph()
+    peterson = nx.petersen_graph()
     df = pd.read_csv('/Users/apple4u/Downloads/logon_distinct.csv')
     df.info()
     df.head(5)
