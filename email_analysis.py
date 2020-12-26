@@ -19,12 +19,13 @@ the csv file is results of the following SQL query:
 """
 
 if __name__ == '__main__':
-    df = pd.read_csv('/Users/apple4u/Downloads/results-20201222-175802.csv')
+    df = pd.read_csv('//Users/apple4u/Downloads/bq-results-20201223-073702-gvno8a241ivr.csv')
     # dropping unused columns, only userid, from and to will be left
     df = df.drop(['id', 'date', 'content', 'cc_field', 'bcc_field', 'pc', 'size', 'attachments'], axis=1)
     print(df.head())
     users_unique = df.user.unique()
     print("the number unique users are: " + str(len(users_unique)))
+    print("initial data size: " + str(len(df)))
 
     # creating a new dataframe which filters out non dtaa emails
     # multiple recipients are added as new rows so that new links can be formed.
@@ -36,6 +37,7 @@ if __name__ == '__main__':
                 df_new = df_new.append({'useer': row['user'], 'froom': row['from_field'], 'too': to_field[i]},
                                        ignore_index=True)
     print('======= PRINTING DF WITH EXTRACTED EMAILS =========')
+    print("extracted DF size: " + str(len(df_new)))
     print(df_new.head(10))
 
     # generating coded user vs from  dictionary to be used as reference
@@ -74,4 +76,5 @@ if __name__ == '__main__':
     plt.savefig('plot.png')
 
     print('======= CALCULATING GRAPH METRICS=========')
-    network.calculate_centrality('degree', G)
+    #calculating 3 centrality metrics: degree. betweenness, closeness
+    network.calculate_centrality('closeness', G)
