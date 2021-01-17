@@ -55,4 +55,5 @@ if __name__ == '__main__':
     print('Confusion matrix:\n', confusion_matrix(yVldtn, predictions))
 
     probabilities = randomForestClassifier.predict_proba(X)[:, 1]
-    print(len(probabilities))
+    print(probabilities)
+

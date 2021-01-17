@@ -77,4 +77,4 @@ if __name__ == '__main__':
 
     print('======= CALCULATING GRAPH METRICS=========')
     #calculating 3 centrality metrics: degree. betweenness, closeness
-    network.calculate_centrality('closeness', G)
+    network.calculate_centrality('pagerank', G)
