@@ -57,3 +57,14 @@ if __name__ == '__main__':
     probabilities = randomForestClassifier.predict_proba(X)[:, 1]
     print(probabilities)
 
+    fpr, tpr, thresholds = roc_curve(y, probabilities)  # Get the ROC Curve
+    roc_auc_score(y, probabilities)
+    import matplotlib.pyplot as plt
+    plt.figure(figsize=(8, 5))
+    # Plot ROC curve
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.plot(fpr, tpr)
+    plt.xlabel('False Positive Rate = 1 - Specificity Score')
+    plt.ylabel('True Positive Rate  = Recall Score')
+    plt.title('ROC Curve for Random Over Sampling')
+    plt.show()
