@@ -31,7 +31,9 @@ def calculate_centrality(centrality_type, graph):
 if __name__ == '__main__':
     # nx = nx.petersen_graph()
     G = nx.Graph()
+    #df = pd.read_csv('/Users/apple4u/Desktop/goksel tez/findings_data/logon_distinct_shrinked.csv')
     df = pd.read_csv('/Users/apple4u/Desktop/goksel tez/findings_data/logon_distinct_shrinked.csv')
+
     df.info()
 
     X = df.user.values

@@ -1,4 +1,5 @@
 import pandas as pd
+import sklearn
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -26,8 +27,7 @@ if __name__ == '__main__':
     #todo move insiders to thevery end. train and test are same that might have caused issue
 
     # splitting raw dataset to three: train validation test split and printing sizes
-    xTrain, xTest, yTrain, yTest = train_test_split(X, y, test_size=0.2, random_state=1,
-                                                    stratify=y)
+    xTrain, xTest, yTrain, yTest = train_test_split(X, y, test_size=0.2, random_state=1,stratify=y)
 
     # to keep insider/non insider ratio for splitted dataset
     print('=================  data size =========================')
@@ -53,18 +53,22 @@ if __name__ == '__main__':
     predictions = randomForestClassifier.predict(xVldtn)
     print('Classification report:]\n', classification_report(yVldtn, predictions))
     print('Confusion matrix:\n', confusion_matrix(yVldtn, predictions))
+    print(sklearn.metrics.accuracy_score(yVldtn, predictions, normalize=True, sample_weight=None))
+
+    print(sklearn.metrics.matthews_corrcoef(yVldtn, predictions, sample_weight=None))
 
     probabilities = randomForestClassifier.predict_proba(X)[:, 1]
     print(probabilities)
 
+
     fpr, tpr, thresholds = roc_curve(y, probabilities)  # Get the ROC Curve
-    roc_auc_score(y, probabilities)
+    print("AUC:" + str(roc_auc_score(y, probabilities)))
     import matplotlib.pyplot as plt
     plt.figure(figsize=(8, 5))
     # Plot ROC curve
     plt.plot([0, 1], [0, 1], 'k--')
     plt.plot(fpr, tpr)
-    plt.xlabel('False Positive Rate = 1 - Specificity Score')
-    plt.ylabel('True Positive Rate  = Recall Score')
-    plt.title('ROC Curve for Random Over Sampling')
+    plt.xlabel('False Positive Rate (FPR)') #= 1 - Specificity Score'
+    plt.ylabel('True Positive Rate (TPR) ') #  = Recall Score
+    plt.title('Receiver Operation Characteristics (ROC)')
     plt.show()

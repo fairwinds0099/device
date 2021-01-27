@@ -1,6 +1,10 @@
+import csv
+
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
+import pylab
+
 import network
 """
 
@@ -62,6 +66,9 @@ if __name__ == '__main__':
     print('======= PRINTING DF WITH CODED/TRANSFORMED EMAILS =========')
     print(df_coded.head(10))
 
+    df_coded.to_csv(r'export_dataframe.csv', index=False, header=True) #50k records
+
+    df_coded = df_coded.head(10000)
     G = nx.Graph()
     X = df_coded.user_common.values
     y = df_coded.coded_to.values
@@ -72,9 +79,25 @@ if __name__ == '__main__':
         G.add_node(y[i])
         G.add_edge(X[i], y[i])
 
-    nx.draw(G)
-    plt.savefig('plot.png')
+    options = {
+        "node_color": "skyblue",
+        "edge_color": "#1017e0",
+        "width": 1,
+        # "edge_cmap": plt.cm.colors.TABLEAU_COLORS,
+        #"with_labels": True,
+        #"font_size": 8,
+        "nodelist": G.nodes,
+        #"node_size": 0.1
+        "node_size": [G.degree[v] for v in G]
+    }
 
-    print('======= CALCULATING GRAPH METRICS=========')
+    #nx.draw(G, pos, **options)
+    nx.draw(G, pos=nx.spring_layout(G), **options)
+    fig = pylab.matplotlib.pyplot.gcf()
+    fig.set_size_inches(15, 12)
+    fig.savefig('email_fructerman.png', dpi=100)
+
+#commented out for plotting purposes
+    #print('======= CALCULATING GRAPH METRICS=========')
     #calculating 3 centrality metrics: degree. betweenness, closeness
-    network.calculate_centrality('pagerank', G)
+    #network.calculate_centrality('pagerank', G)
