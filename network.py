@@ -13,6 +13,8 @@ from networkx.readwrite import json_graph
 
 # noinspection PyShadowingBuiltins
 def calculate_centrality(centrality_type, graph):
+    global dict
+
     if centrality_type == 'degree':
         dict = nx.degree_centrality(graph)
     if centrality_type == 'betweenness':
@@ -21,7 +23,31 @@ def calculate_centrality(centrality_type, graph):
         dict = nx.closeness_centrality(graph)
     if centrality_type == 'pagerank':
         dict = nx.pagerank(graph)
-    target_path = '/Users/apple4u/Desktop/goksel tez/' + centrality_type + '_centrality_raw.csv'
+    if centrality_type == 'eigenvector':
+        dict = nx.eigenvector_centrality(graph, max_iter=500, tol=1.0e-3)
+    if centrality_type == 'percolation': #failed
+        dict = nx.percolation_centrality(graph)
+    if centrality_type == 'common_neighbor': #failed
+        dict = nx.common_neighbor_centrality(graph)
+    if centrality_type == 'communicability_betweenness': #failed for G, also not fr DiG
+        dict = nx.communicability_betweenness_centrality(graph)
+    if centrality_type == 'current_flow_betweenness':  # failed also no for DiG
+        dict = nx.current_flow_betweenness_centrality(graph) #failed for G, graph not connected
+    if centrality_type == 'global_reaching':  # failed only with DiGraph but failed with DiG
+        dict = nx.global_reaching_centrality(graph)
+    if centrality_type == 'harmonic':
+        dict = nx.harmonic_centrality(graph)
+    if centrality_type == 'information': #failed Graph not connected
+        dict = nx.information_centrality(graph)
+    if centrality_type == 'katz': # networkx.exception.PowerIterationFailedConvergence: (PowerIterationFailedConvergence(...), '
+        dict = nx.katz_centrality(graph, alpha=0.1, beta=1.0, max_iter=10000, tol=1.0e-63)
+    if centrality_type == 'closeness_vitality': #failed all nodes are NaN
+        dict = nx.closeness_vitality(graph)
+
+
+
+    #writes to follwing file path and name modify before using
+    target_path = '/Users/apple4u/Desktop/goksel tez/' + centrality_type + '_email.csv'
     with open(target_path, 'w') as f:
         w = csv.writer(f)
         w.writerows(dict.items())
